@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kyomind - Python 後端工程師 × AI 創業探索者</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Kyo Huang 的個人網站入口，軟體工程師，專注 Python 與 AI 應用開發。">
+
+    <!-- Open Graph 標籤 -->
+    <meta property="og:title" content="Kyo Huang - Python × AI × DevOps">
+    <meta property="og:description" content="軟體工程師，專注 Python 與 AI 應用開發。曾是法律人，現以技術寫作與產品思維為強項。">
+    <meta property="og:type" content="profile">
+    <meta property="og:url" content="https://kyomind.tw">
+    <meta property="og:image" content="https://kyomind.tw/1280.jpg">
+    <meta property="og:locale" content="zh_TW">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@kyomind">
+    <meta name="twitter:title" content="Kyo Huang - Python × AI × DevOps">
+    <meta name="twitter:description" content="軟體工程師，專注 Python 與 AI 應用開發">
+    <meta name="twitter:image" content="https://kyomind.tw/1280.jpg">
+
+    <!-- DNS 預連接 -->
+    <link rel="preconnect" href="https://blog.kyomind.tw">
+    <link rel="preconnect" href="https://github.com">
+    <link rel="preconnect" href="https://www.linkedin.com">
+    <link rel="preconnect" href="https://www.facebook.com">
+    <link rel="preconnect" href="https://x.com">
+    <link rel="preconnect" href="https://threads.net">
+
+    <title>Kyo Huang</title>
     <style>
         * {
             margin: 0;
@@ -13,615 +38,247 @@
         }
 
         body {
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #faf9f7;
+            color: #333;
             line-height: 1.6;
-            color: #1a1a1a;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            overflow-x: hidden;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* Hero Section */
-        .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
-            position: relative;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+            justify-content: center;
+            padding: 2rem;
         }
 
-        .hero::before {
-            content: '';
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e8e6e1;
+            overflow: hidden;
+            max-width: 900px;
+            min-width: 320px;
+            width: 100%;
+        }
+
+        .content {
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1.25rem;
+        }
+
+        .avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #9ca3af;
+        }
+
+        .avatar::before {
+            content: "KH";
+            position: absolute;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.1)" points="0,1000 1000,0 1000,1000"/></svg>');
-            background-size: cover;
+            z-index: 1;
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            color: white;
-            text-align: center;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+        .name {
+            font-size: 2.5rem;
             font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-size: 1.25rem;
+            color: #6b7280;
             margin-bottom: 1rem;
-            letter-spacing: -0.02em;
         }
 
-        .hero .subtitle {
-            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            font-weight: 300;
+        .tagline .symbol {
+            color: #9ca3af;
         }
 
-        .hero .tagline {
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            margin-bottom: 3rem;
-            opacity: 0.8;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+        .bio {
+            font-size: 1rem;
+            color: #4b5563;
+            max-width: 500px;
+            margin-bottom: 1.5rem;
         }
 
-        .cta-buttons {
+        .social-links {
             display: flex;
-            gap: 1rem;
-            justify-content: center;
             flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
         }
 
-        .btn {
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
+        .social-link {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-        }
-
-        .btn-primary {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-primary:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-secondary {
-            background: white;
-            color: #667eea;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Stats Section */
-        .stats {
-            background: white;
-            padding: 4rem 0;
-            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            text-align: center;
-        }
-
-        .stat-item {
-            padding: 1.5rem;
-            border-radius: 15px;
-            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #667eea;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            font-size: 1rem;
-            color: #666;
+            padding: 0.5rem 0.75rem;
+            background: #f5f4f1;
+            color: #374151;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
             font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid #e8e6e1;
         }
 
-        /* About Section */
-        .about {
-            padding: 6rem 0;
-            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+        .social-link:hover {
+            background: #ebe9e4;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-text h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: #1a1a1a;
-            font-weight: 700;
-        }
-
-        .about-text p {
-            font-size: 1.1rem;
-            color: #555;
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-
-        .highlight {
-            color: #667eea;
-            font-weight: 600;
-        }
-
-        .journey-timeline {
-            background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .timeline-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        .timeline-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .timeline-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .social-link.primary {
+            background: #d2593c;
             color: white;
-            font-weight: bold;
-            margin-right: 1rem;
-            flex-shrink: 0;
+            border-color: #d2593c;
         }
 
-        .timeline-content h4 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #1a1a1a;
+        .social-link.primary:hover {
+            background: #b84c32;
         }
 
-        .timeline-content p {
-            font-size: 0.9rem;
-            color: #666;
+        .mobile-avatar {
+            display: block;
+            margin: 1.25rem auto;
         }
 
-        /* Projects Section */
-        .projects {
-            padding: 6rem 0;
-            background: #1a1a1a;
-            color: white;
+        .desktop-avatar {
+            display: none;
         }
 
-        .projects h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            font-weight: 700;
+        .avatar img:missing {
+            display: none;
         }
 
-        .project-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 3rem;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .project-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 2rem;
-            font-size: 2rem;
-        }
-
-        .project-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .project-card p {
-            font-size: 1rem;
-            opacity: 0.8;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
-
-        .tech-tag {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        /* Skills Section */
-        .skills {
-            padding: 6rem 0;
-            background: white;
-        }
-
-        .skills h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            font-weight: 700;
-            color: #1a1a1a;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-category {
-            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
-            padding: 2rem;
-            border-radius: 20px;
-            transition: transform 0.3s ease;
-        }
-
-        .skill-category:hover {
-            transform: translateY(-5px);
-        }
-
-        .skill-category h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            color: #667eea;
-            font-weight: 600;
-        }
-
-        .skill-list {
-            list-style: none;
-        }
-
-        .skill-list li {
-            padding: 0.5rem 0;
-            font-size: 1rem;
-            color: #555;
-            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
-        }
-
-        .skill-list li:last-child {
-            border-bottom: none;
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 6rem 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-        }
-
-        .contact h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            font-weight: 700;
-        }
-
-        .contact p {
-            font-size: 1.2rem;
-            margin-bottom: 3rem;
-            opacity: 0.9;
-        }
-
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .about-content {
-                grid-template-columns: 1fr;
+        @media (min-width: 768px) {
+            .content {
+                flex-direction: row;
+                text-align: left;
+                align-items: center;
                 gap: 2rem;
             }
 
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .text-section {
+                flex: 1;
             }
 
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
+            .avatar-section {
+                flex: 1;
+                display: flex;
+                justify-content: center;
                 align-items: center;
             }
 
-            .btn {
-                width: 100%;
-                max-width: 300px;
+            .mobile-avatar {
+                display: none;
+            }
+
+            .desktop-avatar {
+                display: flex;
+            }
+
+            .avatar {
+                width: 200px;
+                height: 200px;
+                font-size: 2.5rem;
+            }
+
+            .social-links {
+                justify-content: flex-start;
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Kyomind</h1>
-                <p class="subtitle">Python 後端工程師 × AI 創業探索者</p>
-                <p class="tagline">從法律公職轉戰程式世界，用技術寫作影響 70 萬讀者，正在打造 AI 時代的個體創業路線</p>
-                <div class="cta-buttons">
-                    <a href="#projects" class="btn btn-primary">查看作品 →</a>
-                    <a href="#contact" class="btn btn-secondary">聯絡合作</a>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="container">
+        <div class="card">
+            <div class="content">
+                <div class="text-section">
+                    <h1 class="name">Kyo Huang</h1>
+                    <p class="tagline">Python <span class="symbol">×</span> AI <span class="symbol">×</span> DevOps</p>
 
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">5.5</div>
-                    <div class="stat-label">年 Python 開發經驗</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">70萬+</div>
-                    <div class="stat-label">技術部落格總瀏覽數</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">180+</div>
-                    <div class="stat-label">技術文章累積</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">1.5萬</div>
-                    <div class="stat-label">月瀏覽量</div>
-                </div>
-            </div>
-        </div>
-    </section>
+                    <div class="avatar mobile-avatar">
+                        <img src="1280.jpg" alt="Kyo Huang" onerror="this.style.display='none'" />
+                    </div>
 
-    <!-- About Section -->
-    <section class="about">
-        <div class="container">
-            <div class="about-content">
-                <div class="journey-timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-icon">法</div>
-                        <div class="timeline-content">
-                            <h4>法律公職 5 年</h4>
-                            <p>法律系畢業，公職體系累積結構化思考能力</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-icon">🔄</div>
-                        <div class="timeline-content">
-                            <h4>34 歲轉職</h4>
-                            <p>勇敢跳出舒適圈，投入程式開發領域</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-icon">🐍</div>
-                        <div class="timeline-content">
-                            <h4>Python 專精</h4>
-                            <p>資料工程 → 後端開發 → AI 應用開發</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-icon">✍️</div>
-                        <div class="timeline-content">
-                            <h4>技術寫作</h4>
-                            <p>4 年累積 180+ 文章，獲 iThome 鐵人賽優選</p>
-                        </div>
+                    <p class="bio">
+                        軟體工程師，專注 Python 與 AI 應用開發。曾是法律人，現以技術寫作與產品思維為強項。
+                    </p>
+
+                    <div class="social-links">
+                        <a href="https://blog.kyomind.tw" class="social-link primary" target="_blank"
+                            aria-label="前往我的部落格">
+                            📝 部落格
+                        </a>
+                        <a href="https://github.com/kyomind" class="social-link" target="_blank"
+                            aria-label="查看我的 GitHub 專案">
+                            🔗 GitHub
+                        </a>
+                        <a href="https://www.linkedin.com/in/kyo-huang/" class="social-link" target="_blank"
+                            aria-label="連結我的 LinkedIn 檔案">
+                            💼 LinkedIn
+                        </a>
+                        <a href="https://www.facebook.com/kyomind/" class="social-link" target="_blank"
+                            aria-label="前往我的 Facebook 頁面">
+                            👤 Facebook
+                        </a>
+                        <a href="https://x.com/kyomind/" class="social-link" target="_blank"
+                            aria-label="關注我的 X (Twitter) 帳號">
+                            🐦 X (Twitter)
+                        </a>
+                        <a href="https://threads.net/@kyomind.tw/" class="social-link" target="_blank"
+                            aria-label="關注我的 Threads 帳號">
+                            🧵 Threads
+                        </a>
                     </div>
                 </div>
-                <div class="about-text">
-                    <h2>不只是工程師，<br>更是<span class="highlight">技術領導者</span></h2>
-                    <p>我相信技術的價值不只在於寫程式，更在於<strong>溝通、傳承與創造</strong>。從法律背景轉入程式世界，讓我具備了獨特的結構化思維與表達能力。</p>
-                    <p>在團隊中，我不只負責後端架構設計，更是<span class="highlight">主要 Code
-                            Reviewer</span>，擅長將複雜技術轉換為非技術角色也能理解的語言，有效促進跨部門協作。</p>
-                    <p>面對 AI 時代，我選擇<strong>擁抱變革</strong>，正在實作 WeaMind AI 專案，探索從技術打工人到個體創業者的轉型路線。</p>
+
+                <div class="avatar-section">
+                    <div class="avatar desktop-avatar">
+                        <img src="1280.jpg" alt="Kyo Huang" onerror="this.style.display='none'" />
+                    </div>
                 </div>
             </div>
+
+            <footer
+                style="text-align: center; padding: 0.5rem 2.5rem 1.5rem; color: #6b7280; font-size: 0.9rem; margin-top: -2.25rem;">
+                <div>
+                    <a href="mailto:odinxp@gmail.com"
+                        style="color: #6b7280; text-decoration: none;">odinxp@gmail.com</a>
+                    © 2025 Kyo Huang
+                </div>
+            </footer>
         </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section class="projects" id="projects">
-        <div class="container">
-            <h2>核心專案</h2>
-            <div class="project-card">
-                <div class="project-icon">🌤️</div>
-                <h3>WeaMind</h3>
-                <p>AI 驅動的智慧氣象助手，結合 LINE Bot、FastAPI 後端、AI Agent 架構。展現完整的產品開發能力，從需求分析到部署監控。</p>
-                <div class="tech-stack">
-                    <span class="tech-tag">FastAPI</span>
-                    <span class="tech-tag">OpenAI Agents SDK</span>
-                    <span class="tech-tag">SQLAlchemy</span>
-                    <span class="tech-tag">Docker</span>
-                    <span class="tech-tag">GitHub Actions</span>
-                    <span class="tech-tag">Prometheus</span>
-                    <span class="tech-tag">Grafana</span>
-                </div>
-                <p style="margin-top: 1rem; font-style: italic;">正在撰寫系列技術文章，目標完成 20 篇深度分享</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section class="skills">
-        <div class="container">
-            <h2>技術能力</h2>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <h3>🔧 後端開發</h3>
-                    <ul class="skill-list">
-                        <li>Python (Django, FastAPI, DRF)</li>
-                        <li>資料庫設計與優化 (PostgreSQL)</li>
-                        <li>RESTful API 設計</li>
-                        <li>系統架構設計</li>
-                        <li>Code Review 與團隊協作</li>
-                    </ul>
-                </div>
-                <div class="skill-category">
-                    <h3>🤖 AI 應用開發</h3>
-                    <ul class="skill-list">
-                        <li>OpenAI API 整合</li>
-                        <li>AI Agent 架構設計</li>
-                        <li>Prompt Engineering</li>
-                        <li>Function Calling</li>
-                        <li>AI 產品策略思維</li>
-                    </ul>
-                </div>
-                <div class="skill-category">
-                    <h3>⚙️ DevOps & 雲端</h3>
-                    <ul class="skill-list">
-                        <li>Docker 容器化</li>
-                        <li>GitHub Actions CI/CD</li>
-                        <li>監控與可觀測性 (Prometheus, Grafana)</li>
-                        <li>AWS 雲端服務 (準備 SAA 認證)</li>
-                        <li>Infrastructure as Code</li>
-                    </ul>
-                </div>
-                <div class="skill-category">
-                    <h3>💬 軟實力</h3>
-                    <ul class="skill-list">
-                        <li>技術寫作與知識傳播</li>
-                        <li>跨部門溝通協調</li>
-                        <li>產品思維與用戶導向</li>
-                        <li>自主學習與適應能力</li>
-                        <li>團隊 Mentoring</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <h2>讓我們聊聊</h2>
-            <p>對技術合作、顧問諮詢或創業交流有興趣嗎？</p>
-            <div class="contact-links">
-                <a href="mailto:your-email@example.com" class="btn btn-primary">📧 Email</a>
-                <a href="#" class="btn btn-secondary">📝 技術部落格</a>
-                <a href="https://github.com/kyomind" class="btn btn-primary">💻 GitHub</a>
-                <a href="#" class="btn btn-secondary">💼 LinkedIn</a>
-            </div>
-        </div>
-    </section>
-
-    <script>
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Add scroll animation
-        window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('section');
-            sections.forEach(section => {
-                const rect = section.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.8) {
-                    section.style.opacity = '1';
-                    section.style.transform = 'translateY(0)';
-                }
-            });
-        });
-    </script>
+    </div>
 </body>
 
 </html>
