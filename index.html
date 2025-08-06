@@ -233,6 +233,20 @@
                 margin-top: -1rem;
             }
         }
+
+        .gradient-highlight {
+            background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 8px rgba(221, 36, 118, 0.12);
+            transition: filter 0.2s;
+            /* 不覆蓋字重、字距、字型大小，繼承 tagline */
+        }
+
+        .gradient-highlight:hover {
+            filter: brightness(1.15) drop-shadow(0 0 8px #ff512f88);
+        }
     </style>
 </head>
 
@@ -242,7 +256,8 @@
             <div class="content">
                 <div class="text-section">
                     <h1 class="name">Kyo Huang</h1>
-                    <p class="tagline">Python <span class="symbol">×</span> AI <span class="symbol">×</span> DevOps</p>
+                    <p class="tagline">Python <span class="symbol">×</span> AI <span class="symbol">×</span> <span
+                            class="gradient-highlight">DevOps</span></p>
 
                     <div class="avatar mobile-avatar">
                         <img src="1280.jpg" alt="Kyo Huang" onerror="this.style.display='none'" />
