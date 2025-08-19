@@ -30,6 +30,13 @@
     <link rel="preconnect" href="https://threads.net">
 
     <title>Kyo's Landing Page</title>
+
+    <!-- Security Headers (backup for non-Cloudflare requests) -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://umami.kyomind.tw 'unsafe-inline'; img-src 'self' https://img.kyomind.tw data:; style-src 'self' 'unsafe-inline'; connect-src 'self' https://www.google-analytics.com https://umami.kyomind.tw; frame-ancestors 'none'">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+
     <!-- Google tag (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-NPTFFVCPJM"></script>
     <script>
@@ -271,27 +278,27 @@
 
                     <div class="social-links">
                         <a href="https://blog.kyomind.tw" class="social-link primary" target="_blank"
-                            aria-label="前往我的部落格">
+                            rel="noopener noreferrer" aria-label="前往我的部落格">
                             📝 部落格
                         </a>
                         <a href="https://github.com/kyomind" class="social-link" target="_blank"
-                            aria-label="查看我的 GitHub 專案">
+                            rel="noopener noreferrer" aria-label="查看我的 GitHub 專案">
                             🔗 GitHub
                         </a>
                         <a href="https://www.linkedin.com/in/kyo-huang/" class="social-link" target="_blank"
-                            aria-label="連結我的 LinkedIn 檔案">
+                            rel="noopener noreferrer" aria-label="連結我的 LinkedIn 檔案">
                             💼 LinkedIn
                         </a>
                         <a href="https://www.facebook.com/kyomind/" class="social-link" target="_blank"
-                            aria-label="前往我的 Facebook 頁面">
+                            rel="noopener noreferrer" aria-label="前往我的 Facebook 頁面">
                             👤 Facebook
                         </a>
-                        <a href="https://x.com/kyomind/" class="social-link" target="_blank"
+                        <a href="https://x.com/kyomind/" class="social-link" target="_blank" rel="noopener noreferrer"
                             aria-label="關注我的 X (Twitter) 帳號">
                             🐦 X (Twitter)
                         </a>
                         <a href="https://threads.net/@kyomind.tw/" class="social-link" target="_blank"
-                            aria-label="關注我的 Threads 帳號">
+                            rel="noopener noreferrer" aria-label="關注我的 Threads 帳號">
                             🧵 Threads
                         </a>
                     </div>
@@ -307,7 +314,7 @@
 
             <footer style="text-align: center; padding: 0.5rem 2.5rem 1.5rem; color: #6b7280; font-size: 1rem;">
                 <div>
-                    <a href="mailto:odinxp@gmail.com"
+                    <a href="mailto:odinxp@gmail.com" rel="noopener"
                         style="color: #6b7280; text-decoration: none;">odinxp@gmail.com</a>
                     © 2025 Kyo Huang
                 </div>
