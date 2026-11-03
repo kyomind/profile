@@ -256,3 +256,21 @@ test('favicons are linked from every page and served from dist root', () => {
   assert.equal(m.theme_color, '#b84c32');
   for (const i of m.icons) assert.ok(existsSync(new URL(`../dist${i.src}`, import.meta.url)), i.src);
 });
+
+// --- 404（票 #8）---
+test('404.html is a noindex bilingual page in the shared card, with links home and no canonical/hreflang', () => {
+  const p = read('404.html');
+  assert.match(p, /<html lang="zh-TW"/);
+  assert.match(p, /<meta name="robots" content="noindex"/);
+  assert.doesNotMatch(p, /rel="canonical"|hreflang="x-default"|og:url/);
+  const main = p.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1];
+  assert.match(main, /[一-鿿]/);
+  assert.ok(main.search(/[一-鿿]/) < main.search(/Page not found/i), 'zh-TW before English');
+  const hrefs = links(main).map((l) => l.href);
+  assert.deepEqual(hrefs, ['/', '/en/']);
+  assert.equal((p.match(/class="card"/g) ?? []).length, 1);
+  assert.match(p, /<footer\b[^>]*>[\s\S]*?©/);
+  assert.equal((p.match(/<script\b/g) ?? []).length, 1, 'only Umami');
+  assert.doesNotMatch(p, /aria-current/);
+  for (const f of allPages) assert.doesNotMatch(read(f), /name="robots"/, `${f} must stay indexable`);
+});

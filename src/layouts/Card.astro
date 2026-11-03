@@ -1,11 +1,12 @@
 ---
 import '../styles/site.css';
 import { content, type Locale, type NavKey } from '../content';
-interface Props { current: NavKey; locale: Locale; title: string }
+// current 省略 = 非入口站頁面（404）：不標目前頁、不送 canonical／hreflang／og:url，加 noindex
+interface Props { current?: NavKey; locale: Locale; title: string }
 const { current, locale, title } = Astro.props;
 const c = content[locale];
 const origin = Astro.site!.origin;
-const hrefOf = (l: Locale) => content[l].nav.links.find((x) => x.key === current)!.href;
+const hrefOf = (l: Locale) => content[l].nav.links.find((x) => x.key === (current ?? 'home'))!.href;
 ---
 <!doctype html>
 <html lang={c.lang}>
@@ -14,10 +15,14 @@ const hrefOf = (l: Locale) => content[l].nav.links.find((x) => x.key === current
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={c.description} />
-    <link rel="canonical" href={origin + hrefOf(locale)} />
-    <link rel="alternate" hreflang="zh-TW" href={origin + hrefOf('zh-TW')} />
-    <link rel="alternate" hreflang="en" href={origin + hrefOf('en')} />
-    <link rel="alternate" hreflang="x-default" href={origin + hrefOf('zh-TW')} />
+    {current ? (
+      <>
+        <link rel="canonical" href={origin + hrefOf(locale)} />
+        <link rel="alternate" hreflang="zh-TW" href={origin + hrefOf('zh-TW')} />
+        <link rel="alternate" hreflang="en" href={origin + hrefOf('en')} />
+        <link rel="alternate" hreflang="x-default" href={origin + hrefOf('zh-TW')} />
+      </>
+    ) : <meta name="robots" content="noindex" />}
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -27,7 +32,7 @@ const hrefOf = (l: Locale) => content[l].nav.links.find((x) => x.key === current
     <meta property="og:title" content={title} />
     <meta property="og:description" content={c.description} />
     <meta property="og:locale" content={c.ogLocale} />
-    <meta property="og:url" content={origin + hrefOf(locale)} />
+    {current && <meta property="og:url" content={origin + hrefOf(locale)} />}
     <meta property="og:image" content={c.avatar.src} />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
