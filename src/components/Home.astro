@@ -7,7 +7,7 @@ const tag = c.tagline.split(' × ');
 ---
 <Card current="home" locale={locale} title={c.title}>
   <h1>{c.name}</h1>
-  <p class="tagline">{tag[0]} <span class="x">×</span> {tag[1]} <span class="x">×</span> <span class="devops">{tag[2]}</span></p>
+  <p class="tagline"><span class="devops">{tag[0]}</span> <span class="x">×</span> {tag[1]} <span class="x">×</span> {tag[2]}</p>
   <div class="avatar"><img src={c.avatar.src} alt={c.avatar.alt} width="250" height="250" /></div>
   <p class="bio">{c.bio}</p>
   <div class="links">

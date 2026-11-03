@@ -13,9 +13,10 @@ test('zh-TW home page renders card content', () => {
   ]) assert.ok(html.includes(s), `missing: ${s}`);
 });
 
-test('zh-TW home tagline reads Python × AI × DevOps', () => {
+test('zh-TW home tagline reads DevOps × AI × Python', () => {
   const tagline = html.match(/<p class="tagline">([\s\S]*?)<\/p>/)?.[1];
-  assert.equal(tagline?.replace(/<[^>]+>/g, ''), 'Python × AI × DevOps');
+  assert.equal(tagline?.replace(/<[^>]+>/g, ''), 'DevOps × AI × Python');
+  assert.match(tagline, /<span class="devops">DevOps<\/span>/);
 });
 
 const links = (s) => [...s.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)].map(([, attrs, text]) => ({
@@ -65,6 +66,7 @@ test('home page lists outputs then accounts after the card, with safe external l
 test('projects page shows WeaMind then Chat Freezer with safe links; home has no project detail', () => {
   const page = readFileSync(new URL('../dist/projects/index.html', import.meta.url), 'utf8');
   const main = page.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1];
+  assert.match(main, /<h1>個人專案<\/h1>/);
   const sections = [...main.matchAll(/<section\b[^>]*>([\s\S]*?)<\/section>/g)].map((m) => m[1]);
   assert.deepEqual(sections.map((s) => s.match(/<h2>([^<]*)<\/h2>/)?.[1]), ['WeaMind', 'Chat Freezer']);
   const [weamind, freezer] = sections.map(links);
@@ -98,15 +100,20 @@ test('home page has no project detail', () => {
 test('about page has experience, stack, writing, contact with safe links', () => {
   const page = readFileSync(new URL('../dist/about/index.html', import.meta.url), 'utf8');
   const main = page.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1];
+  assert.match(main, /<h1>關於我<\/h1>/);
   const sections = [...main.matchAll(/<section\b[^>]*>([\s\S]*?)<\/section>/g)].map((m) => m[1]);
   assert.deepEqual(sections.map((s) => s.match(/<h2>([^<]*)<\/h2>/)?.[1]),
     ['經歷', '技術棧', '寫作成績', 'CV 與聯絡方式', '更多關於我']);
   const [exp, stack, writing, contact, more] = sections;
-  for (const s of ['殷富資訊', '森淨科技', '信義房屋', '法律', '公職']) assert.ok(exp.includes(s), `experience missing ${s}`);
-  for (const s of ['Infrastructure &amp; DevOps', 'Backend', 'Testing &amp; Quality', 'Kubernetes', 'Django', 'pytest']) {
+  for (const s of ['殷富資訊', '森淨科技', '信義房屋', '書記官', '法務部行政執行署宜蘭分署', '行政執行案件']) assert.ok(exp.includes(s), `experience missing ${s}`);
+  for (const s of ['Infrastructure &amp; DevOps', 'Python Backend', 'Testing &amp; Quality', 'Kubernetes', 'Django', 'pytest']) {
     assert.ok(stack.includes(s), `stack missing ${s}`);
   }
-  for (const s of ['210+', '80 萬', '鐵人賽', '《Django 忍法帖》']) assert.ok(writing.includes(s), `writing missing ${s}`);
+  for (const s of ['210+', '80 萬', '鐵人賽', 'Django 忍法帖——Django Ninja 入門指南']) assert.ok(writing.includes(s), `writing missing ${s}`);
+  const series = links(writing)[0];
+  assert.equal(series.href, 'https://ithelp.ithome.com.tw/users/20167825/ironman/7451');
+  assert.match(series.attrs, /target="_blank"/);
+  assert.match(series.attrs, /rel="noopener noreferrer"/);
   const all = [...links(contact), ...links(more)];
   assert.deepEqual(all.map((l) => l.href), [
     'https://www.cake.me/resumes/kyomind',
@@ -131,13 +138,28 @@ test('stylesheet follows DESIGN.md tokens and bans', () => {
   for (const t of ['#faf9f7', '#e8e6e1', '#2d3748', '#b84c32', '#a8452d', '#f5f4f1', '#ebe9e4', '#4b5563', '#6b7280', '#374151', '#bbb', '#e5e7eb', '#9ca3af', 'color-scheme:light', '-apple-system']) {
     assert.ok(css.toLowerCase().includes(t.toLowerCase()), `missing token ${t}`);
   }
-  assert.doesNotMatch(css, /@font-face|@import|gradient|prefers-color-scheme|animation|fonts\.googleapis/i);
+  assert.doesNotMatch(css, /@import|prefers-color-scheme|animation|fonts\.googleapis/i);
+  assert.match(css, /linear-gradient\(90deg,\s*#d83c18[^,]*,\s*#d60069/i);
+  assert.match(css, /@font-face\{font-family:Nunito;src:url\(([^)]+\.woff2)\)/i);
+  const font = css.match(/@font-face\{font-family:Nunito;src:url\(([^)]+\.woff2)\)/i)[1];
+  assert.ok(existsSync(new URL(`../dist${font}`, import.meta.url)), `missing font ${font}`);
+  assert.match(css, /font-family:Nunito,-apple-system/i);
   assert.doesNotMatch(html, /fonts\.googleapis|fonts\.gstatic/i);
+});
+
+test('headings use blog colors', () => {
+  assert.match(css, /h2\{color:#34495e/i);
+  assert.match(css, /h3\{color:#5a7c9f/i);
+  assert.match(css, /h1\{[^}]*font-size:1\.875rem/i);
+  assert.match(css, /h2\{[^}]*font-size:1\.5rem/i);
+  assert.match(css, /h3\{[^}]*font-size:1\.25rem/i);
+  assert.match(css, /\.home h1\{font-size:2\.25rem/i);
 });
 
 test('nav uses neutral colors and pure typography without backgrounds or borders', () => {
   const rule = (sel) => css.split(`${sel}{`)[1]?.split('}')[0] ?? '';
   assert.match(rule('nav'), /margin-bottom:12px/);
+  assert.match(rule('nav'), /font-size:1\.2rem/);
   assert.match(rule('nav a'), /color:#6b7280/i);
   assert.match(rule('nav a'), /min-height:44px/);
   assert.match(rule('nav a'), /text-decoration:none/);
@@ -254,7 +276,7 @@ const enMain = (f) => read(f).match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1];
 const headings = (main, tag) => [...main.matchAll(new RegExp(`<${tag}>([^<]*)</${tag}>`, 'g'))].map((m) => m[1]);
 
 test('en pages have the expected titles', () => {
-  assert.equal(read(enPages['/en/']).match(/<title>([^<]*)<\/title>/)[1], 'Kyo Huang | Python × AI × DevOps');
+  assert.equal(read(enPages['/en/']).match(/<title>([^<]*)<\/title>/)[1], 'Kyo Huang | DevOps × AI × Python');
   assert.equal(read(enPages['/en/projects/']).match(/<title>([^<]*)<\/title>/)[1], 'Projects | Kyo Huang');
   assert.equal(read(enPages['/en/about/']).match(/<title>([^<]*)<\/title>/)[1], 'About | Kyo Huang');
 });
@@ -262,7 +284,7 @@ test('en pages have the expected titles', () => {
 test('en home renders bio, tagline and meta description', () => {
   const p = read(enPages['/en/']);
   assert.ok(p.includes(`<p class="bio">${enBio}</p>`), 'bio');
-  assert.equal(p.match(/<p class="tagline">([\s\S]*?)<\/p>/)?.[1].replace(/<[^>]+>/g, ''), 'Python × AI × DevOps');
+  assert.equal(p.match(/<p class="tagline">([\s\S]*?)<\/p>/)?.[1].replace(/<[^>]+>/g, ''), 'DevOps × AI × Python');
   assert.equal(meta(p, 'name', 'description'), enBio);
 });
 
@@ -270,10 +292,10 @@ test('en pages render the expected headings', () => {
   const home = enMain(enPages['/en/']), projects = enMain(enPages['/en/projects/']), about = enMain(enPages['/en/about/']);
   assert.deepEqual(headings(home, 'h1'), ['Kyo Huang']);
   assert.deepEqual(headings(home, 'h2'), ['Writing', 'Accounts']);
-  assert.deepEqual(headings(projects, 'h1'), ['Projects']);
+  assert.deepEqual(headings(projects, 'h1'), ['Personal Projects']);
   assert.deepEqual(headings(projects, 'h2'), ['WeaMind', 'Chat Freezer']);
-  assert.deepEqual(headings(about, 'h1'), ['About']);
-  assert.deepEqual(headings(about, 'h2'), ['Experience', 'Tech stack', 'Writing', 'CV and contact', 'More about me']);
+  assert.deepEqual(headings(about, 'h1'), ['About Me']);
+  assert.deepEqual(headings(about, 'h2'), ['Experience', 'Tech Stack', 'Writing', 'CV and Contact', 'More About Me']);
 });
 
 test('en about names the companies in English', () => {

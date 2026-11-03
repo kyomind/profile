@@ -14,7 +14,7 @@ export interface About {
   title: string;
   experience: { heading: string; jobs: Job[] };
   stack: { heading: string; groups: { name: string; items: string[] }[] };
-  writing: { heading: string; items: string[] };
+  writing: { heading: string; items: (string | { text: string; link: Link; suffix?: string })[] };
   contact: { heading: string; items: Link[] };
   more: { heading: string; text: string; link: Link };
 }
@@ -42,10 +42,10 @@ export const content: Record<Locale, Content> = {
     lang: 'zh-TW',
     ogLocale: 'zh_TW',
     name: 'Kyo Huang',
-    tagline: 'Python × AI × DevOps',
+    tagline: 'DevOps × AI × Python',
     bio: '軟體工程師，相信 AI 與 Infra 是開發者的未來。擅長用文字記錄學習，希望可以寫到 70 歲。',
     avatar: { src: 'https://img.kyomind.tw/1280.jpg', alt: 'Kyo Huang 的大頭照' },
-    title: 'Kyo Huang | Python × AI × DevOps',
+    title: 'Kyo Huang | DevOps × AI × Python',
     description: '軟體工程師，相信 AI 與 Infra 是開發者的未來。擅長用文字記錄學習，希望可以寫到 70 歲。',
     nav: {
       label: '主導覽',
@@ -56,7 +56,7 @@ export const content: Record<Locale, Content> = {
       ],
       langs: [{ label: '中文', locale: 'zh-TW' }, { label: 'EN', locale: 'en' }],
     },
-    projects: { heading: '專案', title: '專案 | Kyo Huang' },
+    projects: { heading: '個人專案', title: '專案 | Kyo Huang' },
     showcase: [
       {
         title: 'WeaMind',
@@ -90,7 +90,7 @@ export const content: Record<Locale, Content> = {
       { name: 'X', href: 'https://x.com/kyomind' },
     ] },
     about: {
-      heading: '關於',
+      heading: '關於我',
       title: '關於 | Kyo Huang',
       experience: {
         heading: '經歷',
@@ -108,8 +108,8 @@ export const content: Record<Locale, Content> = {
             summary: '建構每日數百萬筆用戶行為資料的清洗、聚合與儲存流程，並以 Django 開發內部資料查詢服務。',
           },
           {
-            title: '法律系畢業，任公職 5 年多',
-            summary: '離開公職後轉職成為軟體工程師，從資料工程起步。',
+            title: '書記官', org: '法務部行政執行署宜蘭分署',
+            summary: '處理行政執行案件，任職 5 年多。',
           },
         ],
       },
@@ -117,7 +117,7 @@ export const content: Record<Locale, Content> = {
         heading: '技術棧',
         groups: [
           { name: 'Infrastructure & DevOps', items: ['AWS', 'Kubernetes / K3s', 'Terraform', 'Prometheus / Grafana', 'Jenkins / GitHub Actions'] },
-          { name: 'Backend', items: ['Python', 'Django / FastAPI', 'PostgreSQL', 'Redis', 'MongoDB'] },
+          { name: 'Python Backend', items: ['Python', 'Django / FastAPI', 'PostgreSQL', 'Redis', 'MongoDB'] },
           { name: 'Testing & Quality', items: ['pytest', 'Ruff / Pyright', 'SonarQube', 'CodeQL / Bandit'] },
         ],
       },
@@ -126,7 +126,7 @@ export const content: Record<Locale, Content> = {
         items: [
           '210+ 篇技術與思考文章',
           '部落格累積瀏覽 80 萬以上',
-          '2024 iThome 鐵人賽 Python 組優選，系列為《Django 忍法帖》',
+          { text: '2024 iThome 鐵人賽 Python 組優選，系列為《', link: { name: 'Django 忍法帖——Django Ninja 入門指南', href: 'https://ithelp.ithome.com.tw/users/20167825/ironman/7451' }, suffix: '》' },
         ],
       },
       contact: {
@@ -147,10 +147,10 @@ export const content: Record<Locale, Content> = {
     lang: 'en',
     ogLocale: 'en_US',
     name: 'Kyo Huang',
-    tagline: 'Python × AI × DevOps',
+    tagline: 'DevOps × AI × Python',
     bio: 'Software engineer who believes AI and infrastructure are where developers are headed. I learn by writing things down, and I hope to keep doing it until I\u2019m 70.',
     avatar: { src: 'https://img.kyomind.tw/1280.jpg', alt: 'Portrait of Kyo Huang' },
-    title: 'Kyo Huang | Python × AI × DevOps',
+    title: 'Kyo Huang | DevOps × AI × Python',
     description: 'Software engineer who believes AI and infrastructure are where developers are headed. I learn by writing things down, and I hope to keep doing it until I\u2019m 70.',
     nav: {
       label: 'Main navigation',
@@ -161,7 +161,7 @@ export const content: Record<Locale, Content> = {
       ],
       langs: [{ label: '中文', locale: 'zh-TW' }, { label: 'EN', locale: 'en' }],
     },
-    projects: { heading: 'Projects', title: 'Projects | Kyo Huang' },
+    projects: { heading: 'Personal Projects', title: 'Projects | Kyo Huang' },
     showcase: [
       {
         title: 'WeaMind',
@@ -195,7 +195,7 @@ export const content: Record<Locale, Content> = {
       { name: 'X', href: 'https://x.com/kyomind' },
     ] },
     about: {
-      heading: 'About',
+      heading: 'About Me',
       title: 'About | Kyo Huang',
       experience: {
         heading: 'Experience',
@@ -213,16 +213,16 @@ export const content: Record<Locale, Content> = {
             summary: 'Built pipelines to clean, aggregate and store millions of daily user-behavior records, and developed an internal data query service with Django.',
           },
           {
-            title: 'Law graduate, 5+ years in the civil service',
-            summary: 'Left the civil service to become a software engineer, starting in data engineering.',
+            title: 'Clerk', org: 'Yilan Branch, Administrative Enforcement Agency, Ministry of Justice',
+            summary: 'Handled administrative enforcement cases for over five years.',
           },
         ],
       },
       stack: {
-        heading: 'Tech stack',
+        heading: 'Tech Stack',
         groups: [
           { name: 'Infrastructure & DevOps', items: ['AWS', 'Kubernetes / K3s', 'Terraform', 'Prometheus / Grafana', 'Jenkins / GitHub Actions'] },
-          { name: 'Backend', items: ['Python', 'Django / FastAPI', 'PostgreSQL', 'Redis', 'MongoDB'] },
+          { name: 'Python Backend', items: ['Python', 'Django / FastAPI', 'PostgreSQL', 'Redis', 'MongoDB'] },
           { name: 'Testing & Quality', items: ['pytest', 'Ruff / Pyright', 'SonarQube', 'CodeQL / Bandit'] },
         ],
       },
@@ -231,18 +231,18 @@ export const content: Record<Locale, Content> = {
         items: [
           '210+ posts on technology and thinking',
           '800,000+ total blog views',
-          'Excellence Award, Python category, 2024 iThome Ironman Contest, for the series \u201CDjango Ninja Scrolls\u201D (in Chinese)',
+          { text: 'Excellence Award, Python category, 2024 iThome Ironman Contest, for the series “', link: { name: 'Django Ninja Scrolls: A Beginner’s Guide to Django Ninja', href: 'https://ithelp.ithome.com.tw/users/20167825/ironman/7451' }, suffix: '” (in Chinese)' },
         ],
       },
       contact: {
-        heading: 'CV and contact',
+        heading: 'CV and Contact',
         items: [
           { name: 'CV (CakeResume)', href: 'https://www.cake.me/resumes/kyomind' },
           { name: 'odinxp@gmail.com', href: 'mailto:odinxp@gmail.com' },
         ],
       },
       more: {
-        heading: 'More about me',
+        heading: 'More About Me',
         text: 'The full story is on the About page of my blog (in Chinese).',
         link: { name: 'About page on the blog', href: 'https://blog.kyomind.tw/about/' },
       },

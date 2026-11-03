@@ -15,7 +15,7 @@
 
 ```sh
 npm install
-make dev     # 本機預覽 http://localhost:4321
+make dev     # 本機預覽 http://localhost:4322
 make build   # 建置到 dist/
 make ready   # build + 檢查 dist/，commit 前必須通過
 ```

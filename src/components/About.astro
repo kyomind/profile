@@ -21,16 +21,18 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
   </section>
   <section>
     <h2>{a.stack.heading}</h2>
-    {a.stack.groups.map((g) => (
-      <>
-        <h3>{g.name}</h3>
-        <ul>{g.items.map((i) => <li>{i}</li>)}</ul>
-      </>
-    ))}
+    <div class="stack-groups">
+      {a.stack.groups.map((g) => (
+        <div>
+          <h3>{g.name}</h3>
+          <ul>{g.items.map((i) => <li>{i}</li>)}</ul>
+        </div>
+      ))}
+    </div>
   </section>
   <section>
     <h2>{a.writing.heading}</h2>
-    <ul>{a.writing.items.map((i) => <li>{i}</li>)}</ul>
+    <ul>{a.writing.items.map((i) => <li>{typeof i === 'string' ? i : <>{i.text}<a href={i.link.href} {...ext}>{i.link.name}</a>{i.suffix}</>}</li>)}</ul>
   </section>
   <section>
     <h2>{a.contact.heading}</h2>

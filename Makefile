@@ -2,7 +2,7 @@
 
 start: dev
 
-# 本機預覽：http://localhost:4321
+# 本機預覽：http://localhost:4322
 dev:
 	npm run dev
 
