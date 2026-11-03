@@ -36,7 +36,6 @@ for (const [path, file] of Object.entries(pages)) {
       assert.equal(a.includes('aria-current="page"'), href === path, `aria-current on ${href}`);
     }
     assert.match(navHtml, new RegExp(`<a\\b[^>]*href="/en${path}"[^>]*>EN</a>`));
-    assert.match(navHtml, new RegExp(`<a\\b[^>]*href="${path}"[^>]*>中文</a>`));
   });
 }
 
@@ -136,6 +135,28 @@ test('stylesheet follows DESIGN.md tokens and bans', () => {
   assert.doesNotMatch(html, /fonts\.googleapis|fonts\.gstatic/i);
 });
 
+test('nav uses neutral colors and separates selected items from the card', () => {
+  const rule = (sel) => css.split(`${sel}{`)[1]?.split('}')[0] ?? '';
+  assert.match(rule('nav'), /margin-bottom:12px/);
+  assert.match(rule('nav a'), /color:#6b7280/i);
+  assert.match(rule('nav a'), /min-height:44px/);
+  assert.match(rule('nav a:not([aria-current]):hover'), /color:#2d3748/i);
+  assert.match(rule('nav a'), /text-decoration:none/);
+  assert.match(rule('nav a'), /border:1px solid (?:transparent|#0000)/);
+  assert.match(rule('nav a'), /border-radius:8px/);
+  assert.match(rule('nav a:not([aria-current]):hover'), /text-decoration:underline/);
+  assert.match(rule('nav a[aria-current]'), /color:#2d3748/i);
+  assert.match(rule('nav a[aria-current]'), /background:(?:#ffffff|#fff)/i);
+  assert.match(rule('nav a[aria-current]'), /border-color:#b0aca2/i);
+});
+
+test('content text links use accent color and underline only on hover', () => {
+  const rule = (sel) => css.split(`${sel}{`)[1]?.split('}')[0] ?? '';
+  assert.match(rule('main:not(.home) a'), /color:#b84c32/i);
+  assert.match(rule('main:not(.home) a'), /text-decoration:none/);
+  assert.match(rule('main:not(.home) a:hover'), /text-decoration:underline/);
+});
+
 test('only the blog button uses the accent button style; accounts are secondary buttons', () => {
   const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1];
   const all = links(main);
@@ -144,11 +165,18 @@ test('only the blog button uses the accent button style; accounts are secondary 
   assert.ok(all.every((l) => /class="[^"]*\bbtn\b/.test(l.attrs)), 'all home links are buttons');
 });
 
-for (const [path, file] of Object.entries(pages)) {
-  test(`${path} sits in one card with a footer`, () => {
+// 頁尾在卡片外：一張卡、一個含 © 的 footer，且位於 </main></div> 之後
+const assertFooterAfterCard = (page) => {
+  assert.equal((page.match(/class="card"/g) ?? []).length, 1);
+  assert.equal((page.match(/<footer\b/g) ?? []).length, 1);
+  assert.match(page, /<\/main>\s*<\/div>\s*<footer\b[^>]*>[^<]*©[^<]*<\/footer>\s*<\/body>/);
+};
+
+for (const file of [...Object.values(pages), 'en/index.html', 'en/projects/index.html', 'en/about/index.html']) {
+  test(`${file} sits in one card with its footer outside`, () => {
     const page = readFileSync(new URL(`../dist/${file}`, import.meta.url), 'utf8');
     assert.equal((page.match(/class="card"/g) ?? []).length, 1);
-    assert.match(page, /<footer\b[^>]*>[\s\S]*?©[\s\S]*?<\/footer>/);
+    assertFooterAfterCard(page);
   });
 }
 
@@ -170,8 +198,25 @@ test('en pages render with lang=en, English nav and a switch to the matching zh 
       assert.equal(a.includes('aria-current="page"'), href === en);
     }
     assert.match(navHtml, new RegExp(`<a\\b[^>]*href="${zh}"[^>]*>中文</a>`));
-    assert.match(navHtml, new RegExp(`<a\\b[^>]*href="${en}"[^>]*>EN</a>`));
     assert.doesNotMatch(p.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1], /[一-鿿]/, `${en} has CJK in main`);
+  }
+});
+
+test('language switch links only to the opposite locale as a clean toggle', () => {
+  for (const [zh, en] of pairs) {
+    const zhLang = read(pages[zh]).match(/<span class="lang">([\s\S]*?)<\/span>/)[1];
+    const zhItems = links(zhLang);
+    assert.equal(zhItems.length, 1);
+    assert.equal(zhItems[0].href, en);
+    assert.ok(zhItems[0].attrs.includes('hreflang="en"'));
+    assert.ok(!zhItems[0].attrs.includes('aria-current'));
+
+    const enLang = read(enPages[en]).match(/<span class="lang">([\s\S]*?)<\/span>/)[1];
+    const enItems = links(enLang);
+    assert.equal(enItems.length, 1);
+    assert.equal(enItems[0].href, zh);
+    assert.ok(enItems[0].attrs.includes('hreflang="zh-TW"'));
+    assert.ok(!enItems[0].attrs.includes('aria-current'));
   }
 });
 
@@ -301,8 +346,7 @@ test('404.html is a noindex bilingual page in the shared card, with links home a
   assert.ok(main.search(/[一-鿿]/) < main.search(/Page not found/i), 'zh-TW before English');
   const hrefs = links(main).map((l) => l.href);
   assert.deepEqual(hrefs, ['/', '/en/']);
-  assert.equal((p.match(/class="card"/g) ?? []).length, 1);
-  assert.match(p, /<footer\b[^>]*>[\s\S]*?©/);
+  assertFooterAfterCard(p);
   assert.equal((p.match(/<script\b/g) ?? []).length, 1, 'only Umami');
   assert.doesNotMatch(p, /aria-current/);
   for (const f of allPages) assert.doesNotMatch(read(f), /name="robots"/, `${f} must stay indexable`);

@@ -7,18 +7,18 @@ body {
 }
 a { color: inherit; }
 
-nav { display: flex; align-items: center; gap: 0.25rem; padding: 0 0.25rem; font-size: 0.95rem; }
-nav a { color: #6b7280; text-decoration: none; padding: 0.6rem 0.5rem; min-height: 44px; display: inline-flex; align-items: center; }
-nav a:hover { color: #2d3748; }
-nav a[aria-current] { color: #2d3748; text-decoration: underline; text-underline-offset: 4px; }
-nav .lang { margin-left: auto; display: flex; }
+nav { display: flex; align-items: center; gap: 0.25rem; margin-bottom: 12px; font-size: 0.95rem; }
+nav a { color: #6b7280; text-decoration: none; padding: 0.4rem 0.5rem; border: 1px solid transparent; border-radius: 8px; min-height: 44px; display: inline-flex; align-items: center; white-space: nowrap; }
+nav a:not([aria-current]):hover { color: #2d3748; text-decoration: underline; text-underline-offset: 4px; }
+nav a[aria-current] { color: #2d3748; background: #ffffff; border-color: #b0aca2; }
+nav .lang { margin-left: auto; display: flex; gap: 0.25rem; }
 
 .card {
   background: #fff; border: 1px solid #e8e6e1; border-radius: 12px; overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0,0,0,.05), 0 1px 3px rgba(0,0,0,.1);
+  box-shadow: 0 4px 14px -2px rgba(0,0,0,.1);
 }
 main { padding: 1.8rem 1.5rem 1.5rem; }
-footer { text-align: center; color: #6b7280; padding: 0 1.5rem 1.5rem; }
+footer { text-align: center; color: #6b7280; margin-top: 1.5rem; }
 
 h1 { font-size: 2.5rem; font-weight: 700; color: #2d3748; line-height: 1.2; }
 h2, h3 { color: #2d3748; }
@@ -31,7 +31,8 @@ main:not(.home) h1 { margin-bottom: 1rem; }
 main:not(.home) ul { padding-left: 1.25rem; margin: 0.5rem 0; }
 main:not(.home) li { margin: 0.25rem 0; }
 main:not(.home) p { margin: 0.5rem 0; }
-main:not(.home) a { color: #2d3748; text-underline-offset: 3px; padding: 0.25rem 0; }
+main:not(.home) a { color: #b84c32; text-decoration: none; text-underline-offset: 3px; padding: 0.25rem 0; }
+main:not(.home) a:hover { text-decoration: underline; }
 
 /* 首頁名片：手機單欄置中 */
 .home { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.25rem; }
@@ -59,6 +60,7 @@ main:not(.home) a { color: #2d3748; text-underline-offset: 3px; padding: 0.25rem
 .btn.primary:hover { background: #a8452d; }
 
 @media (min-width: 768px) {
+  body { padding-top: 2.5rem; }
   main { padding: 2.5rem; }
   .home {
     display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto 1fr;

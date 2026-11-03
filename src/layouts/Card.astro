@@ -7,6 +7,8 @@ const { current, locale, title } = Astro.props;
 const c = content[locale];
 const origin = Astro.site!.origin;
 const hrefOf = (l: Locale) => content[l].nav.links.find((x) => x.key === (current ?? 'home'))!.href;
+const targetLocale: Locale = locale === 'zh-TW' ? 'en' : 'zh-TW';
+const targetLang = c.nav.langs.find((l) => l.locale === targetLocale) ?? { locale: targetLocale, label: targetLocale === 'en' ? 'EN' : '中文' };
 ---
 <!doctype html>
 <html lang={c.lang}>
@@ -46,12 +48,12 @@ const hrefOf = (l: Locale) => content[l].nav.links.find((x) => x.key === (curren
         <a href={l.href} aria-current={l.key === current ? 'page' : undefined}>{l.label}</a>
       ))}
       <span class="lang">
-        {c.nav.langs.map((l) => <a href={hrefOf(l.locale)} hreflang={l.locale} lang={l.locale}>{l.label}</a>)}
+        <a href={hrefOf(targetLocale)} hreflang={targetLocale} lang={targetLocale}>{targetLang.label}</a>
       </span>
     </nav>
     <div class="card">
       <main class={current === 'home' ? 'home' : undefined}><slot /></main>
-      <footer>© 2025-2026 Kyo Huang</footer>
     </div>
+    <footer>© 2025-2026 Kyo Huang</footer>
   </body>
 </html>
