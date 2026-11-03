@@ -2,20 +2,23 @@
 import Card from '../layouts/Card.astro';
 import { content } from '../content';
 const c = content['zh-TW']!;
+const tag = c.tagline.split(' × ');
 ---
 <Card current="home">
-  <img src={c.avatar.src} alt={c.avatar.alt} width="96" height="96" onerror="this.hidden=true" />
   <h1>{c.name}</h1>
-  <p>{c.tagline}</p>
-  <p>{c.bio}</p>
-  {[c.outputs, c.accounts].map(({ heading, items }) => (
-    <section>
-      <h2>{heading}</h2>
-      <ul>
-        {items.map((l) => (
-          <li><a href={l.href} target="_blank" rel="noopener noreferrer">{l.name}</a></li>
-        ))}
-      </ul>
-    </section>
-  ))}
+  <p class="tagline">{tag[0]} <span class="x">×</span> {tag[1]} <span class="x">×</span> <span class="devops">{tag[2]}</span></p>
+  <div class="avatar"><img src={c.avatar.src} alt={c.avatar.alt} width="250" height="250" onerror="this.hidden=true" /></div>
+  <p class="bio">{c.bio}</p>
+  <div class="links">
+    {[c.outputs, c.accounts].map(({ heading, items }, g) => (
+      <section>
+        <h2>{heading}</h2>
+        <ul>
+          {items.map((l) => (
+            <li><a class={g === 0 ? 'btn primary' : 'btn'} href={l.href} target="_blank" rel="noopener noreferrer">{l.name}</a></li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
 </Card>

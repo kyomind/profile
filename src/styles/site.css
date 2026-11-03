@@ -1,0 +1,70 @@
+html { color-scheme: light; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  background: #faf9f7; color: #4b5563; line-height: 1.6;
+  max-width: calc(900px + 2rem); margin: 0 auto; padding: 0.5rem 1rem 2rem;
+}
+a { color: inherit; }
+
+nav { display: flex; align-items: center; gap: 0.25rem; padding: 0 0.25rem; font-size: 0.95rem; }
+nav a { color: #6b7280; text-decoration: none; padding: 0.6rem 0.5rem; min-height: 44px; display: inline-flex; align-items: center; }
+nav a:hover { color: #2d3748; }
+nav a[aria-current] { color: #2d3748; text-decoration: underline; text-underline-offset: 4px; }
+nav .lang { margin-left: auto; display: flex; }
+
+.card {
+  background: #fff; border: 1px solid #e8e6e1; border-radius: 12px; overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,.05), 0 1px 3px rgba(0,0,0,.1);
+}
+main { padding: 1.8rem 1.5rem 1.5rem; }
+footer { text-align: center; color: #6b7280; padding: 0 1.5rem 1.5rem; }
+
+h1 { font-size: 2.5rem; font-weight: 700; color: #2d3748; line-height: 1.2; }
+h2, h3 { color: #2d3748; }
+h2 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+h3 { font-size: 1rem; margin-top: 1rem; }
+
+/* 專案頁、關於頁：單欄條列，區塊間只用留白和細線 */
+main:not(.home) section { padding: 1.5rem 0; border-top: 1px solid #e8e6e1; }
+main:not(.home) h1 { margin-bottom: 1rem; }
+main:not(.home) ul { padding-left: 1.25rem; margin: 0.5rem 0; }
+main:not(.home) li { margin: 0.25rem 0; }
+main:not(.home) p { margin: 0.5rem 0; }
+main:not(.home) a { color: #2d3748; text-underline-offset: 3px; padding: 0.25rem 0; }
+
+/* 首頁名片：手機單欄置中 */
+.home { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.25rem; }
+.avatar {
+  width: 155px; height: 155px; border-radius: 50%; position: relative; overflow: hidden;
+  background: #e5e7eb; color: #9ca3af; font-size: 2rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.avatar::before { content: "KH"; position: absolute; }
+.avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.tagline { font-size: 1.25rem; color: #6b7280; }
+.tagline .x { color: #bbb; }
+.tagline .devops { color: #d2593c; }
+.bio { max-width: 500px; }
+.links { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
+.links section, .links ul { display: contents; list-style: none; }
+.links h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.btn {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0.5rem 0.9rem;
+  background: #f5f4f1; color: #374151; border: 1px solid #e8e6e1; border-radius: 8px;
+  font-size: 0.95rem; font-weight: 500; text-decoration: none;
+}
+.btn:hover { background: #ebe9e4; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,.1); }
+.btn.primary { background: #d2593c; border-color: #d2593c; color: #fff; }
+.btn.primary:hover { background: #b84c32; }
+
+@media (min-width: 768px) {
+  main { padding: 2.5rem; }
+  .home {
+    display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto 1fr;
+    column-gap: 2rem; row-gap: 1.25rem; text-align: left; align-content: center;
+  }
+  .home > * { grid-column: 1; }
+  .home > .avatar { grid-column: 2; grid-row: 1 / -1; width: 250px; height: 250px; font-size: 2.5rem; justify-self: center; align-self: center; }
+  .links { justify-content: flex-start; align-self: start; }
+}

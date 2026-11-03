@@ -8,10 +8,14 @@ test('zh-TW home page renders card content', () => {
   assert.match(html, /<html lang="zh-TW"/);
   for (const s of [
     '<h1>Kyo Huang</h1>',
-    '<p>Python × AI × DevOps</p>',
-    '<p>軟體工程師，相信 AI 與 Infra 是開發者的未來。擅長用文字記錄學習，希望可以寫到 70 歲。</p>',
+    '<p class="bio">軟體工程師，相信 AI 與 Infra 是開發者的未來。擅長用文字記錄學習，希望可以寫到 70 歲。</p>',
     'src="https://img.kyomind.tw/1280.jpg"',
   ]) assert.ok(html.includes(s), `missing: ${s}`);
+});
+
+test('zh-TW home tagline reads Python × AI × DevOps', () => {
+  const tagline = html.match(/<p class="tagline">([\s\S]*?)<\/p>/)?.[1];
+  assert.equal(tagline?.replace(/<[^>]+>/g, ''), 'Python × AI × DevOps');
 });
 
 const links = (s) => [...s.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)].map(([, attrs, text]) => ({
@@ -116,3 +120,34 @@ test('about page has experience, stack, writing, contact with safe links', () =>
   }
   assert.doesNotMatch(main, /PROFILE|Let.s talk|↗/);
 });
+
+// --- 視覺（DESIGN.md）---
+const css = [
+  ...[...html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]),
+  ...[...html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*href="([^"]+)"/g)].map((m) => readFileSync(new URL(`../dist${m[1]}`, import.meta.url), 'utf8')),
+].join('\n');
+
+test('stylesheet follows DESIGN.md tokens and bans', () => {
+  assert.ok(css.length > 500, 'no stylesheet found');
+  for (const t of ['#faf9f7', '#e8e6e1', '#2d3748', '#d2593c', '#b84c32', '#f5f4f1', '#ebe9e4', '#4b5563', '#6b7280', '#374151', '#bbb', '#e5e7eb', '#9ca3af', 'color-scheme: light', '-apple-system']) {
+    assert.ok(css.toLowerCase().includes(t.toLowerCase()), `missing token ${t}`);
+  }
+  assert.doesNotMatch(css, /@font-face|@import|gradient|prefers-color-scheme|animation|fonts\.googleapis/i);
+  assert.doesNotMatch(html, /fonts\.googleapis|fonts\.gstatic|<script\b/i);
+});
+
+test('only the blog button uses the accent button style; accounts are secondary buttons', () => {
+  const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1];
+  const all = links(main);
+  const primary = all.filter((l) => /class="[^"]*\bprimary\b/.test(l.attrs));
+  assert.deepEqual(primary.map((l) => l.text), ['部落格']);
+  assert.ok(all.every((l) => /class="[^"]*\bbtn\b/.test(l.attrs)), 'all home links are buttons');
+});
+
+for (const [path, file] of Object.entries(pages)) {
+  test(`${path} sits in one card with a footer`, () => {
+    const page = readFileSync(new URL(`../dist/${file}`, import.meta.url), 'utf8');
+    assert.equal((page.match(/class="card"/g) ?? []).length, 1);
+    assert.match(page, /<footer\b[^>]*>[\s\S]*?©[\s\S]*?<\/footer>/);
+  });
+}

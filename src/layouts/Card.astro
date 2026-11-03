@@ -1,4 +1,5 @@
 ---
+import '../styles/site.css';
 import { content, type NavKey } from '../content';
 interface Props { current: NavKey; title?: string }
 const c = content['zh-TW']!;
@@ -22,6 +23,9 @@ const currentHref = c.nav.links.find((l) => l.key === current)!.href;
         {c.nav.langs.map((l) => <a href={l.href ?? currentHref}>{l.label}</a>)}
       </span>
     </nav>
-    <main><slot /></main>
+    <div class="card">
+      <main class={current === 'home' ? 'home' : undefined}><slot /></main>
+      <footer>© 2025-2026 Kyo Huang</footer>
+    </div>
   </body>
 </html>
