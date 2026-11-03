@@ -133,7 +133,7 @@ test('stylesheet follows DESIGN.md tokens and bans', () => {
     assert.ok(css.toLowerCase().includes(t.toLowerCase()), `missing token ${t}`);
   }
   assert.doesNotMatch(css, /@font-face|@import|gradient|prefers-color-scheme|animation|fonts\.googleapis/i);
-  assert.doesNotMatch(html, /fonts\.googleapis|fonts\.gstatic|<script\b/i);
+  assert.doesNotMatch(html, /fonts\.googleapis|fonts\.gstatic/i);
 });
 
 test('only the blog button uses the accent button style; accounts are secondary buttons', () => {
@@ -203,5 +203,38 @@ test('every page has hreflang alternates, canonical, and per-locale meta/OG/Twit
       assert.equal(meta(p, 'name', 'twitter:image'), 'https://img.kyomind.tw/1280.jpg');
       if (locale === 'en') assert.doesNotMatch(title + desc, /[一-鿿]/);
     }
+  }
+});
+
+// --- 安全 header 與統計（票 #7）---
+const allPages = [...Object.values(pages), ...Object.values(enPages)];
+
+test('_headers sends CSP, nosniff and referrer policy for all paths', () => {
+  const h = read('_headers');
+  assert.match(h, /^\/\*$/m, 'rule for all paths');
+  const csp = h.match(/^\s+Content-Security-Policy: (.+)$/m)?.[1];
+  assert.ok(csp, 'missing CSP');
+  assert.match(h, /^\s+X-Content-Type-Options: nosniff$/m);
+  assert.match(h, /^\s+Referrer-Policy: strict-origin-when-cross-origin$/m);
+  assert.match(csp, /script-src 'self' https:\/\/umami\.kyomind\.tw(;|$)/);
+  assert.match(csp, /connect-src 'self' https:\/\/umami\.kyomind\.tw(;|$)/);
+  assert.match(csp, /img-src 'self' https:\/\/img\.kyomind\.tw(;|$)/);
+  assert.doesNotMatch(csp, /unsafe-inline|unsafe-eval|google|cloudflareinsights/);
+});
+
+test('pages have no meta CSP, no GA4, no inline script or handler; Umami is async and scoped to kyomind.tw', () => {
+  for (const f of allPages) {
+    const p = read(f);
+    assert.doesNotMatch(p, /Content-Security-Policy/i, `${f} meta CSP`);
+    assert.doesNotMatch(p, /googletagmanager|google-analytics|gtag|G-[A-Z0-9]{8,}/, `${f} GA4`);
+    assert.doesNotMatch(p, /<style\b|\sstyle="|\son[a-z]+=/i, `${f} inline style/handler`);
+    const scripts = [...p.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)];
+    assert.equal(scripts.length, 1, `${f} expected only Umami script`);
+    const [, attrs, body] = scripts[0];
+    assert.equal(body, '', `${f} inline script`);
+    assert.match(attrs, /\bsrc="https:\/\/umami\.kyomind\.tw\/script\.js"/);
+    assert.match(attrs, /\basync\b/);
+    assert.match(attrs, /data-website-id="79cdd0f1-75b2-4ef7-b03f-dd14cc688099"/);
+    assert.match(attrs, /data-domains="kyomind\.tw"/);
   }
 });
