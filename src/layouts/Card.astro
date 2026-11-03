@@ -1,0 +1,27 @@
+---
+import { content, type NavKey } from '../content';
+interface Props { current: NavKey; title?: string }
+const c = content['zh-TW']!;
+const { current, title = c.title } = Astro.props;
+const currentHref = c.nav.links.find((l) => l.key === current)!.href;
+---
+<!doctype html>
+<html lang={c.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={c.description} />
+  </head>
+  <body>
+    <nav aria-label={c.nav.label}>
+      {c.nav.links.map((l) => (
+        <a href={l.href} aria-current={l.key === current ? 'page' : undefined}>{l.label}</a>
+      ))}
+      <span class="lang">
+        {c.nav.langs.map((l) => <a href={l.href ?? currentHref}>{l.label}</a>)}
+      </span>
+    </nav>
+    <main><slot /></main>
+  </body>
+</html>

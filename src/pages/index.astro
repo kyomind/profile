@@ -1,21 +1,11 @@
 ---
+import Card from '../layouts/Card.astro';
 import { content } from '../content';
 const c = content['zh-TW']!;
 ---
-<!doctype html>
-<html lang={c.lang}>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{c.title}</title>
-    <meta name="description" content={c.description} />
-  </head>
-  <body>
-    <main>
-      <img src={c.avatar.src} alt={c.avatar.alt} width="96" height="96" onerror="this.hidden=true" />
-      <h1>{c.name}</h1>
-      <p>{c.tagline}</p>
-      <p>{c.bio}</p>
-    </main>
-  </body>
-</html>
+<Card current="home">
+  <img src={c.avatar.src} alt={c.avatar.alt} width="96" height="96" onerror="this.hidden=true" />
+  <h1>{c.name}</h1>
+  <p>{c.tagline}</p>
+  <p>{c.bio}</p>
+</Card>
