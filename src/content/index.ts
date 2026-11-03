@@ -187,7 +187,7 @@ export const content: Record<Locale, Content> = {
         ],
       },
     ],
-    outputs: { heading: 'Output', items: [{ name: 'Blog', href: 'https://blog.kyomind.tw' }] },
+    outputs: { heading: 'Writing', items: [{ name: 'Blog', href: 'https://blog.kyomind.tw' }] },
     accounts: { heading: 'Accounts', items: [
       { name: 'GitHub', href: 'https://github.com/kyomind' },
       { name: 'LinkedIn', href: 'https://www.linkedin.com/in/kyo-huang/' },
@@ -201,11 +201,11 @@ export const content: Record<Locale, Content> = {
         heading: 'Experience',
         jobs: [
           {
-            title: 'Senior Software Engineer', org: 'Inforich', period: '2025.03 — 2026.03',
+            title: 'Senior Software Engineer', org: 'INFOTECH', period: '2025.03 — 2026.03',
             summary: 'Built conversational AI services and knowledge-base systems for finance: RAG, agent flows, multi-LLM integration, PII masking and guardrails.',
           },
           {
-            title: 'Python Backend Engineer', org: 'Sensing Tech', period: '2021.07 — 2024.08',
+            title: 'Python Backend Engineer', org: 'AMASTek', period: '2021.07 — 2024.08',
             summary: 'Developed an IoT device management platform and tripled query performance with Redis. Led workflow automation and quality control, cutting code-review rejections by 30% and test time by 50%.',
           },
           {
@@ -231,7 +231,7 @@ export const content: Record<Locale, Content> = {
         items: [
           '210+ posts on technology and thinking',
           '800,000+ total blog views',
-          'Honorable mention, Python category, 2024 iThome Ironman Contest, for the series \u201CDjango Ninja Scrolls\u201D (in Chinese)',
+          'Excellence Award, Python category, 2024 iThome Ironman Contest, for the series \u201CDjango Ninja Scrolls\u201D (in Chinese)',
         ],
       },
       contact: {
