@@ -1,13 +1,19 @@
-.PHONY: start dev update
+.PHONY: start dev build check ready
 
 start: dev
 
-# 本機預覽：http://localhost:4321（改用 Astro 後換成 npm run dev，port 相同）
+# 本機預覽：http://localhost:4321
 dev:
-	@echo "預覽：http://localhost:4321"
-	@python3 -m http.server 4321 --bind 127.0.0.1
+	npm run dev
 
-# 更新版本號碼
-update:
-	@echo "正在更新版本號碼..."
-	@./update-version.sh
+# 建置到 dist/
+build:
+	npm run build
+
+# 檢查現有 dist/（要對最新內容請用 make ready）
+check:
+	npm run check
+
+# 先 build 再 check
+ready: build
+	@$(MAKE) --no-print-directory check

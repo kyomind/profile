@@ -25,3 +25,7 @@ __pycache__/
 assets/images/favicon/*.tmp
 
 # 你可以根據專案需求自行擴充
+
+# Astro
+dist/
+.astro/
