@@ -14,7 +14,7 @@ body {
 }
 a { color: inherit; }
 
-nav { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 12px; font-size: 1.2rem; }
+nav { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 12px; font-size: 1.15rem; }
 nav a { color: #6b7280; text-decoration: none; padding: 0.4rem 0.5rem; min-height: 44px; display: inline-flex; align-items: center; white-space: nowrap; }
 nav a:hover, nav a[aria-current] { color: #2d3748; }
 nav .lang { margin-left: auto; display: flex; }

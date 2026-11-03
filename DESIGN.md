@@ -26,7 +26,7 @@
 | 頭像載入前的底色／字母 | `#e5e7eb` ／ `#9ca3af` |
 
 - **字型**：英數使用本機託管的 Nunito Latin variable，中文字元使用系統字型 `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif`；`line-height: 1.6`。
-- **字級**：首頁名字 2.25rem／700；其他頁面 H1 1.875rem，H2 1.5rem，H3 1.25rem；標語 1.25rem；內文／簡介 1.1rem（簡介最寬 500px）；導覽 1.2rem；按鈕 1.1rem／500。
+- **字級**：首頁名字 2.25rem／700；其他頁面 H1 1.875rem，H2 1.5rem，H3 1.25rem；標語 1.25rem；內文／簡介 1.1rem（簡介最寬 500px）；導覽 1.15rem；按鈕 1.1rem／500。
 - **圓角**：卡片 12px，按鈕 8px，頭像正圓。
 - **陰影**：卡片 `0 4px 14px -2px rgba(0,0,0,.1)`；按鈕 hover 上移 1px，加上 `0 2px 4px rgba(0,0,0,.1)`。
 

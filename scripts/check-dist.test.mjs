@@ -159,7 +159,7 @@ test('headings use blog colors', () => {
 test('nav uses neutral colors and pure typography without backgrounds or borders', () => {
   const rule = (sel) => css.split(`${sel}{`)[1]?.split('}')[0] ?? '';
   assert.match(rule('nav'), /margin-bottom:12px/);
-  assert.match(rule('nav'), /font-size:1\.2rem/);
+  assert.match(rule('nav'), /font-size:1\.15rem/);
   assert.match(rule('nav a'), /color:#6b7280/i);
   assert.match(rule('nav a'), /min-height:44px/);
   assert.match(rule('nav a'), /text-decoration:none/);
