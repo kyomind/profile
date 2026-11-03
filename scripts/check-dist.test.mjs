@@ -135,19 +135,16 @@ test('stylesheet follows DESIGN.md tokens and bans', () => {
   assert.doesNotMatch(html, /fonts\.googleapis|fonts\.gstatic/i);
 });
 
-test('nav uses neutral colors and separates selected items from the card', () => {
+test('nav uses neutral colors and pure typography without backgrounds or borders', () => {
   const rule = (sel) => css.split(`${sel}{`)[1]?.split('}')[0] ?? '';
   assert.match(rule('nav'), /margin-bottom:12px/);
   assert.match(rule('nav a'), /color:#6b7280/i);
   assert.match(rule('nav a'), /min-height:44px/);
-  assert.match(rule('nav a:not([aria-current]):hover'), /color:#2d3748/i);
   assert.match(rule('nav a'), /text-decoration:none/);
-  assert.match(rule('nav a'), /border:1px solid (?:transparent|#0000)/);
-  assert.match(rule('nav a'), /border-radius:8px/);
-  assert.match(rule('nav a:not([aria-current]):hover'), /text-decoration:underline/);
-  assert.match(rule('nav a[aria-current]'), /color:#2d3748/i);
-  assert.match(rule('nav a[aria-current]'), /background:(?:#ffffff|#fff)/i);
-  assert.match(rule('nav a[aria-current]'), /border-color:#b0aca2/i);
+  const hoverCurrent = rule('nav a:hover,nav a[aria-current]') || rule('nav a[aria-current],nav a:hover');
+  assert.match(hoverCurrent, /color:#2d3748/i);
+  assert.doesNotMatch(hoverCurrent, /background/i);
+  assert.doesNotMatch(hoverCurrent, /border/i);
 });
 
 test('content text links use accent color and underline only on hover', () => {
