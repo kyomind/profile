@@ -129,7 +129,7 @@ const css = [
 
 test('stylesheet follows DESIGN.md tokens and bans', () => {
   assert.ok(css.length > 500, 'no stylesheet found');
-  for (const t of ['#faf9f7', '#e8e6e1', '#2d3748', '#d2593c', '#b84c32', '#f5f4f1', '#ebe9e4', '#4b5563', '#6b7280', '#374151', '#bbb', '#e5e7eb', '#9ca3af', 'color-scheme:light', '-apple-system']) {
+  for (const t of ['#faf9f7', '#e8e6e1', '#2d3748', '#b84c32', '#a8452d', '#f5f4f1', '#ebe9e4', '#4b5563', '#6b7280', '#374151', '#bbb', '#e5e7eb', '#9ca3af', 'color-scheme:light', '-apple-system']) {
     assert.ok(css.toLowerCase().includes(t.toLowerCase()), `missing token ${t}`);
   }
   assert.doesNotMatch(css, /@font-face|@import|gradient|prefers-color-scheme|animation|fonts\.googleapis/i);

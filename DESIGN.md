@@ -21,7 +21,7 @@
 | 標語、頁尾 | `#6b7280` |
 | 標語裡的 `×` | `#bbb` |
 | 次要按鈕文字 | `#374151` |
-| **點綴色（唯一）** | `#d2593c`，hover `#b84c32` |
+| **點綴色（唯一）** | `#b84c32`（白底對比 5.10，AA），hover `#a8452d` |
 | 頭像載入前的底色／字母 | `#e5e7eb` ／ `#9ca3af` |
 
 - **字型**：只用系統字型 `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif`；`line-height: 1.6`。
@@ -42,7 +42,7 @@
 
 ## 和舊站的差異
 
-- 標語的「DevOps」從漸層文字改成單色點綴色 `#d2593c`。
+- 標語的「DevOps」從漸層文字改成單色點綴色 `#b84c32`。
 - 按鈕拿掉 emoji 圖示。
 - 帳號：拿掉 Facebook，新增 Threads、X。
 - 新增導覽和語言切換。

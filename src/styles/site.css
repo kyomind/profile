@@ -44,7 +44,7 @@ main:not(.home) a { color: #2d3748; text-underline-offset: 3px; padding: 0.25rem
 .avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .tagline { font-size: 1.25rem; color: #6b7280; }
 .tagline .x { color: #bbb; }
-.tagline .devops { color: #d2593c; }
+.tagline .devops { color: #b84c32; }
 .bio { max-width: 500px; }
 .links { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
 .links section, .links ul { display: contents; list-style: none; }
@@ -55,8 +55,8 @@ main:not(.home) a { color: #2d3748; text-underline-offset: 3px; padding: 0.25rem
   font-size: 0.95rem; font-weight: 500; text-decoration: none;
 }
 .btn:hover { background: #ebe9e4; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,.1); }
-.btn.primary { background: #d2593c; border-color: #d2593c; color: #fff; }
-.btn.primary:hover { background: #b84c32; }
+.btn.primary { background: #b84c32; border-color: #b84c32; color: #fff; }
+.btn.primary:hover { background: #a8452d; }
 
 @media (min-width: 768px) {
   main { padding: 2.5rem; }
