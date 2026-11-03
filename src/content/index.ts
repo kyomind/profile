@@ -5,8 +5,8 @@ export interface Showcase { title: string; summary: string; links: { label: stri
 export type NavKey = 'home' | 'projects' | 'about';
 // href 省略 = 目前這頁（本語言）
 export interface Nav { label: string; links: { key: NavKey; label: string; href: string }[]; langs: { label: string; href?: string }[] }
-export interface Output { name: string; href: string }
-export interface Account { name: string; href: string }
+export interface Link { name: string; href: string }
+export interface LinkGroup { heading: string; items: Link[] }
 
 export interface Content {
   lang: string;
@@ -17,10 +17,10 @@ export interface Content {
   title: string;
   description: string;
   nav: Nav;
-  // 票 #4 才會渲染：代表作 / 產出 / 帳號
+  // showcase 由專案頁（#11）渲染，首頁不放
   showcase: Showcase[];
-  outputs: Output[];
-  accounts: Account[];
+  outputs: LinkGroup;
+  accounts: LinkGroup;
 }
 
 export const content: Partial<Record<Locale, Content>> = {
@@ -43,8 +43,13 @@ export const content: Partial<Record<Locale, Content>> = {
       langs: [{ label: '中文' }, { label: 'EN', href: '/en/' }],
     },
     showcase: [],
-    outputs: [],
-    accounts: [],
+    outputs: { heading: '產出', items: [{ name: '部落格', href: 'https://blog.kyomind.tw' }] },
+    accounts: { heading: '帳號', items: [
+      { name: 'GitHub', href: 'https://github.com/kyomind' },
+      { name: 'LinkedIn', href: 'https://www.linkedin.com/in/kyo-huang/' },
+      { name: 'Threads', href: 'https://www.threads.com/@kyomind.tw' },
+      { name: 'X', href: 'https://x.com/kyomind' },
+    ] },
   },
   // en：票 #5 才加入
 };

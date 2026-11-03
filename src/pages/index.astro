@@ -8,4 +8,14 @@ const c = content['zh-TW']!;
   <h1>{c.name}</h1>
   <p>{c.tagline}</p>
   <p>{c.bio}</p>
+  {[c.outputs, c.accounts].map(({ heading, items }) => (
+    <section>
+      <h2>{heading}</h2>
+      <ul>
+        {items.map((l) => (
+          <li><a href={l.href} target="_blank" rel="noopener noreferrer">{l.name}</a></li>
+        ))}
+      </ul>
+    </section>
+  ))}
 </Card>
