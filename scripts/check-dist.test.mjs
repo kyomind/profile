@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 
 const html = readFileSync(new URL('../dist/index.html', import.meta.url), 'utf8');
 
@@ -237,4 +237,22 @@ test('pages have no meta CSP, no GA4, no inline script or handler; Umami is asyn
     assert.match(attrs, /data-website-id="79cdd0f1-75b2-4ef7-b03f-dd14cc688099"/);
     assert.match(attrs, /data-domains="kyomind\.tw"/);
   }
+});
+
+test('favicons are linked from every page and served from dist root', () => {
+  for (const f of allPages) {
+    const p = read(f);
+    for (const re of [
+      /<link rel="icon" href="\/favicon\.ico"/,
+      /<link rel="icon" type="image\/png" sizes="32x32" href="\/favicon-32x32\.png"/,
+      /<link rel="icon" type="image\/png" sizes="16x16" href="\/favicon-16x16\.png"/,
+      /<link rel="apple-touch-icon" href="\/apple-touch-icon\.png"/,
+      /<link rel="manifest" href="\/site\.webmanifest"/,
+    ]) assert.match(p, re, `${f} ${re}`);
+  }
+  for (const f of ['favicon.ico', 'favicon-16x16.png', 'favicon-32x32.png', 'apple-touch-icon.png', 'android-chrome-192x192.png', 'android-chrome-512x512.png'])
+    assert.ok(existsSync(new URL(`../dist/${f}`, import.meta.url)), `dist/${f}`);
+  const m = JSON.parse(read('site.webmanifest'));
+  assert.equal(m.theme_color, '#b84c32');
+  for (const i of m.icons) assert.ok(existsSync(new URL(`../dist${i.src}`, import.meta.url)), i.src);
 });
