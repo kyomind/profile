@@ -1,20 +1,4 @@
 ---
-import Card from '../../layouts/Card.astro';
-import { content } from '../../content';
-const c = content['zh-TW']!;
+import Projects from '../../components/Projects.astro';
 ---
-<Card current="projects" title="專案 | Kyo Huang">
-  <h1>專案</h1>
-  {c.showcase.map((p) => (
-    <section>
-      <h2>{p.title}</h2>
-      <p>{p.summary}</p>
-      {p.highlights && <ul>{p.highlights.map((h) => <li>{h}</li>)}</ul>}
-      <ul>
-        {p.links.map((l) => (
-          <li><a href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a></li>
-        ))}
-      </ul>
-    </section>
-  ))}
-</Card>
+<Projects locale="zh-TW" />

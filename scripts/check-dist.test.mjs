@@ -35,7 +35,7 @@ for (const [path, file] of Object.entries(pages)) {
       assert.ok(a, `missing nav link ${href} ${label}`);
       assert.equal(a.includes('aria-current="page"'), href === path, `aria-current on ${href}`);
     }
-    assert.match(navHtml, /<a\b[^>]*href="\/en\/"[^>]*>EN<\/a>/);
+    assert.match(navHtml, new RegExp(`<a\\b[^>]*href="/en${path}"[^>]*>EN</a>`));
     assert.match(navHtml, new RegExp(`<a\\b[^>]*href="${path}"[^>]*>中文</a>`));
   });
 }
@@ -151,3 +151,57 @@ for (const [path, file] of Object.entries(pages)) {
     assert.match(page, /<footer\b[^>]*>[\s\S]*?©[\s\S]*?<\/footer>/);
   });
 }
+
+// --- 英文版與 i18n（票 #5）---
+const read = (f) => readFileSync(new URL(`../dist/${f}`, import.meta.url), 'utf8');
+const meta = (p, attr, key) => p.match(new RegExp(`<meta ${attr}="${key}" content="([^"]*)"`))?.[1];
+const enPages = { '/en/': 'en/index.html', '/en/projects/': 'en/projects/index.html', '/en/about/': 'en/about/index.html' };
+const pairs = [['/', '/en/'], ['/projects/', '/en/projects/'], ['/about/', '/en/about/']];
+const origin = 'https://kyomind.tw';
+
+test('en pages render with lang=en, English nav and a switch to the matching zh page', () => {
+  for (const [zh, en] of pairs) {
+    const p = read(enPages[en]);
+    assert.match(p, /<html lang="en"/, en);
+    const navHtml = p.match(/<nav\b[^>]*>[\s\S]*?<\/nav>/)[0];
+    for (const [href, label] of [['/en/', 'Home'], ['/en/projects/', 'Projects'], ['/en/about/', 'About']]) {
+      const a = navHtml.match(new RegExp(`<a\\b[^>]*href="${href}"[^>]*>${label}</a>`))?.[0];
+      assert.ok(a, `${en} missing nav ${href}`);
+      assert.equal(a.includes('aria-current="page"'), href === en);
+    }
+    assert.match(navHtml, new RegExp(`<a\\b[^>]*href="${zh}"[^>]*>中文</a>`));
+    assert.match(navHtml, new RegExp(`<a\\b[^>]*href="${en}"[^>]*>EN</a>`));
+    assert.doesNotMatch(p.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1], /[一-鿿]/, `${en} has CJK in main`);
+  }
+});
+
+test('en pages mirror the zh sections and links', () => {
+  const sec = (p) => [...p.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1].matchAll(/<section\b[^>]*>([\s\S]*?)<\/section>/g)].map((m) => links(m[1]).map((l) => l.href));
+  for (const [zh, en] of pairs) assert.deepEqual(sec(read(enPages[en])), sec(read(pages[zh])), en);
+});
+
+test('every page has hreflang alternates, canonical, and per-locale meta/OG/Twitter', () => {
+  for (const [zh, en] of pairs) {
+    for (const [path, file, locale, ogLocale] of [[zh, pages[zh], 'zh-TW', 'zh_TW'], [en, enPages[en], 'en', 'en_US']]) {
+      const p = read(file);
+      const alt = (l) => p.match(new RegExp(`<link rel="alternate" hreflang="${l}" href="([^"]*)"`))?.[1];
+      assert.equal(alt('zh-TW'), origin + zh, `${path} zh-TW`);
+      assert.equal(alt('en'), origin + en, `${path} en`);
+      assert.equal(alt('x-default'), origin + zh, `${path} x-default`);
+      assert.ok(p.includes(`<link rel="canonical" href="${origin + path}"`), `${path} canonical`);
+      const title = p.match(/<title>([^<]*)<\/title>/)[1];
+      const desc = meta(p, 'name', 'description');
+      assert.ok(title && desc);
+      assert.equal(meta(p, 'property', 'og:title'), title);
+      assert.equal(meta(p, 'property', 'og:description'), desc);
+      assert.equal(meta(p, 'property', 'og:locale'), ogLocale);
+      assert.equal(meta(p, 'property', 'og:url'), origin + path);
+      assert.equal(meta(p, 'property', 'og:image'), 'https://img.kyomind.tw/1280.jpg');
+      assert.equal(meta(p, 'name', 'twitter:card'), 'summary');
+      assert.equal(meta(p, 'name', 'twitter:title'), title);
+      assert.equal(meta(p, 'name', 'twitter:description'), desc);
+      assert.equal(meta(p, 'name', 'twitter:image'), 'https://img.kyomind.tw/1280.jpg');
+      if (locale === 'en') assert.doesNotMatch(title + desc, /[一-鿿]/);
+    }
+  }
+});

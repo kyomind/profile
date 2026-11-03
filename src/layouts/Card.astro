@@ -1,10 +1,11 @@
 ---
 import '../styles/site.css';
-import { content, type NavKey } from '../content';
-interface Props { current: NavKey; title?: string }
-const c = content['zh-TW']!;
-const { current, title = c.title } = Astro.props;
-const currentHref = c.nav.links.find((l) => l.key === current)!.href;
+import { content, type Locale, type NavKey } from '../content';
+interface Props { current: NavKey; locale: Locale; title: string }
+const { current, locale, title } = Astro.props;
+const c = content[locale];
+const origin = Astro.site!.origin;
+const hrefOf = (l: Locale) => content[l].nav.links.find((x) => x.key === current)!.href;
 ---
 <!doctype html>
 <html lang={c.lang}>
@@ -13,6 +14,20 @@ const currentHref = c.nav.links.find((l) => l.key === current)!.href;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={c.description} />
+    <link rel="canonical" href={origin + hrefOf(locale)} />
+    <link rel="alternate" hreflang="zh-TW" href={origin + hrefOf('zh-TW')} />
+    <link rel="alternate" hreflang="en" href={origin + hrefOf('en')} />
+    <link rel="alternate" hreflang="x-default" href={origin + hrefOf('zh-TW')} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={c.description} />
+    <meta property="og:locale" content={c.ogLocale} />
+    <meta property="og:url" content={origin + hrefOf(locale)} />
+    <meta property="og:image" content={c.avatar.src} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={c.description} />
+    <meta name="twitter:image" content={c.avatar.src} />
   </head>
   <body>
     <nav aria-label={c.nav.label}>
@@ -20,7 +35,7 @@ const currentHref = c.nav.links.find((l) => l.key === current)!.href;
         <a href={l.href} aria-current={l.key === current ? 'page' : undefined}>{l.label}</a>
       ))}
       <span class="lang">
-        {c.nav.langs.map((l) => <a href={l.href ?? currentHref}>{l.label}</a>)}
+        {c.nav.langs.map((l) => <a href={hrefOf(l.locale)} hreflang={l.locale} lang={l.locale}>{l.label}</a>)}
       </span>
     </nav>
     <div class="card">
