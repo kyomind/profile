@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kyo Huang</title>
+<style>
+  :root { --red: #e30613; --ink: #111; --mute: #555; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: #fff; color: var(--ink); }
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, "PingFang TC", "Noto Sans TC", sans-serif;
+    font-size: 16px; line-height: 1.5;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 20px;
+    padding: 40px 40px 48px;
+    align-content: start;
+  }
+  a { color: inherit; text-decoration: none; }
+  a:hover, a:focus-visible { color: var(--red); }
+
+  .meta {
+    grid-column: 1 / 4; grid-row: 1;
+    font-size: 14px; font-weight: 700; line-height: 1.35;
+  }
+  .meta .tag { color: var(--red); }
+  .avatar {
+    grid-column: 11 / 13; grid-row: 1;
+    width: 64px; height: 64px; object-fit: cover; justify-self: end;
+    filter: grayscale(1);
+  }
+  h1 {
+    grid-column: 1 / 13; grid-row: 2;
+    margin-top: 40px;
+    font-size: clamp(76px, 14vw, 190px);
+    font-weight: 700; line-height: .86; letter-spacing: -.045em;
+  }
+  .bio {
+    grid-column: 5 / 10; grid-row: 3;
+    margin-top: 36px;
+    font-size: 20px; line-height: 1.55; font-weight: 500;
+  }
+  .rule { grid-column: 1 / 13; grid-row: 4; border-top: 2px solid var(--ink); margin-top: 40px; }
+
+  .label {
+    grid-column: 1 / 5; padding-top: 14px;
+    font-size: 14px; font-weight: 700;
+  }
+  .list { grid-column: 5 / 13; padding-top: 14px; list-style: none; }
+  .list li { display: grid; grid-template-columns: 9em 1fr; column-gap: 20px; padding-bottom: 4px; }
+  .list .k { font-weight: 700; }
+  .list .v { color: var(--mute); }
+  .list a:hover .v { color: var(--red); }
+
+  .sec-out  { grid-row: 5; }
+  .sec-acc  { grid-row: 6; margin-top: 14px; }
+  .projects {
+    grid-column: 5 / 13; grid-row: 7; margin-top: 40px;
+    font-size: 14px; color: var(--mute);
+  }
+  .projects a { border-bottom: 1px solid currentColor; }
+
+  @media (max-width: 720px) {
+    body { padding: 24px 20px 40px; column-gap: 12px; grid-template-columns: repeat(6, 1fr); }
+    .meta { grid-column: 1 / 5; }
+    .avatar { grid-column: 5 / 7; width: 48px; height: 48px; }
+    h1 { grid-column: 1 / 7; margin-top: 36px; font-size: 27vw; }
+    .bio { grid-column: 2 / 7; font-size: 17px; margin-top: 32px; }
+    .rule { grid-column: 1 / 7; margin-top: 40px; }
+    .label { grid-column: 1 / 7; }
+    .list { grid-column: 2 / 7; padding-top: 4px; }
+    .sec-out.label { grid-row: 5; } .sec-out.list { grid-row: 6; }
+    .sec-acc.label { grid-row: 7; } .sec-acc.list { grid-row: 8; margin-top: 0; }
+    .sec-acc { margin-top: 20px; }
+    .list li { grid-template-columns: 6.5em 1fr; }
+    .projects { grid-column: 2 / 7; grid-row: 9; margin-top: 32px; }
+  }
+</style>
+</head>
+<body>
+  <p class="meta">kyomind.tw<br><span class="tag">Python × AI × DevOps</span></p>
+  <img class="avatar" src="https://img.kyomind.tw/1280.jpg" alt="Kyo Huang" onerror="this.style.display='none'">
+
+  <h1>Kyo<br>Huang</h1>
+
+  <p class="bio">軟體工程師，相信 AI 與 Infra 是開發者的未來。擅長用文字記錄學習，希望可以寫到 70 歲。</p>
+
+  <div class="rule"></div>
+
+  <h2 class="label sec-out">產出</h2>
+  <ul class="list sec-out">
+    <li><a href="https://blog.kyomind.tw" target="_blank" rel="noopener noreferrer"><span class="k">部落格</span></a><span class="v">長篇技術筆記</span></li>
+  </ul>
+
+  <h2 class="label sec-acc">帳號</h2>
+  <ul class="list sec-acc">
+    <li><a href="https://github.com/kyomind" target="_blank" rel="noopener noreferrer"><span class="k">GitHub</span></a><span class="v">kyomind</span></li>
+    <li><a href="https://www.linkedin.com/in/kyo-huang/" target="_blank" rel="noopener noreferrer"><span class="k">LinkedIn</span></a><span class="v">kyo-huang</span></li>
+    <li><a href="https://www.threads.com/@kyomind.tw" target="_blank" rel="noopener noreferrer"><span class="k">Threads</span></a><span class="v">@kyomind.tw</span></li>
+    <li><a href="https://x.com/kyomind" target="_blank" rel="noopener noreferrer"><span class="k">X</span></a><span class="v">@kyomind</span></li>
+  </ul>
+
+  <p class="projects"><a href="/projects/">專案</a></p>
+</body>
+</html>
