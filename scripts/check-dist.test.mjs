@@ -206,6 +206,39 @@ test('every page has hreflang alternates, canonical, and per-locale meta/OG/Twit
   }
 });
 
+// --- 英文版文案（字面期望值，不引用 content 當 oracle）---
+const enBio = 'Software engineer who believes AI and infrastructure are where developers are headed. I learn by writing things down, and I hope to keep doing it until I\u2019m 70.';
+const enMain = (f) => read(f).match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1];
+const headings = (main, tag) => [...main.matchAll(new RegExp(`<${tag}>([^<]*)</${tag}>`, 'g'))].map((m) => m[1]);
+
+test('en pages have the expected titles', () => {
+  assert.equal(read(enPages['/en/']).match(/<title>([^<]*)<\/title>/)[1], 'Kyo Huang | Python × AI × DevOps');
+  assert.equal(read(enPages['/en/projects/']).match(/<title>([^<]*)<\/title>/)[1], 'Projects | Kyo Huang');
+  assert.equal(read(enPages['/en/about/']).match(/<title>([^<]*)<\/title>/)[1], 'About | Kyo Huang');
+});
+
+test('en home renders bio, tagline and meta description', () => {
+  const p = read(enPages['/en/']);
+  assert.ok(p.includes(`<p class="bio">${enBio}</p>`), 'bio');
+  assert.equal(p.match(/<p class="tagline">([\s\S]*?)<\/p>/)?.[1].replace(/<[^>]+>/g, ''), 'Python × AI × DevOps');
+  assert.equal(meta(p, 'name', 'description'), enBio);
+});
+
+test('en pages render the expected headings', () => {
+  const home = enMain(enPages['/en/']), projects = enMain(enPages['/en/projects/']), about = enMain(enPages['/en/about/']);
+  assert.deepEqual(headings(home, 'h1'), ['Kyo Huang']);
+  assert.deepEqual(headings(home, 'h2'), ['Writing', 'Accounts']);
+  assert.deepEqual(headings(projects, 'h1'), ['Projects']);
+  assert.deepEqual(headings(projects, 'h2'), ['WeaMind', 'Chat Freezer']);
+  assert.deepEqual(headings(about, 'h1'), ['About']);
+  assert.deepEqual(headings(about, 'h2'), ['Experience', 'Tech stack', 'Writing', 'CV and contact', 'More about me']);
+});
+
+test('en about names the companies in English', () => {
+  const about = enMain(enPages['/en/about/']);
+  for (const s of ['INFOTECH', 'AMASTek', 'Sinyi Realty']) assert.ok(about.includes(s), `about missing ${s}`);
+});
+
 // --- 安全 header 與統計（票 #7）---
 const allPages = [...Object.values(pages), ...Object.values(enPages)];
 
