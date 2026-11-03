@@ -91,3 +91,28 @@ test('home page has no project detail', () => {
   const homeMain = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1];
   assert.doesNotMatch(homeMain, /WeaMind|Chat Freezer|K3s/);
 });
+
+test('about page has experience, stack, writing, contact with safe links', () => {
+  const page = readFileSync(new URL('../dist/about/index.html', import.meta.url), 'utf8');
+  const main = page.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1];
+  const sections = [...main.matchAll(/<section\b[^>]*>([\s\S]*?)<\/section>/g)].map((m) => m[1]);
+  assert.deepEqual(sections.map((s) => s.match(/<h2>([^<]*)<\/h2>/)?.[1]),
+    ['經歷', '技術棧', '寫作成績', 'CV 與聯絡方式', '更多關於我']);
+  const [exp, stack, writing, contact, more] = sections;
+  for (const s of ['殷富資訊', '森淨科技', '信義房屋', '法律', '公職']) assert.ok(exp.includes(s), `experience missing ${s}`);
+  for (const s of ['Infrastructure &amp; DevOps', 'Backend', 'Testing &amp; Quality', 'Kubernetes', 'Django', 'pytest']) {
+    assert.ok(stack.includes(s), `stack missing ${s}`);
+  }
+  for (const s of ['210+', '80 萬', '鐵人賽', '《Django 忍法帖》']) assert.ok(writing.includes(s), `writing missing ${s}`);
+  const all = [...links(contact), ...links(more)];
+  assert.deepEqual(all.map((l) => l.href), [
+    'https://www.cake.me/resumes/kyomind',
+    'mailto:odinxp@gmail.com',
+    'https://blog.kyomind.tw/about/',
+  ]);
+  for (const l of all.filter((l) => !l.href.startsWith('mailto:'))) {
+    assert.match(l.attrs, /target="_blank"/, l.href);
+    assert.match(l.attrs, /rel="noopener noreferrer"/, l.href);
+  }
+  assert.doesNotMatch(main, /PROFILE|Let.s talk|↗/);
+});

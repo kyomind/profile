@@ -1,7 +1,47 @@
 ---
 import Card from '../../layouts/Card.astro';
+import { content } from '../../content';
+const a = content['zh-TW']!.about;
+const ext = { target: '_blank', rel: 'noopener noreferrer' };
 ---
 <Card current="about" title="關於 | Kyo Huang">
-  <h1>關於</h1>
-  <p>內容準備中。</p>
+  <h1>{a.heading}</h1>
+  <section>
+    <h2>{a.experience.heading}</h2>
+    <ul>
+      {a.experience.jobs.map((j) => (
+        <li>
+          <h3>{j.org ? `${j.title}・${j.org}` : j.title}</h3>
+          {j.period && <p>{j.period}</p>}
+          <p>{j.summary}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+  <section>
+    <h2>{a.stack.heading}</h2>
+    {a.stack.groups.map((g) => (
+      <>
+        <h3>{g.name}</h3>
+        <ul>{g.items.map((i) => <li>{i}</li>)}</ul>
+      </>
+    ))}
+  </section>
+  <section>
+    <h2>{a.writing.heading}</h2>
+    <ul>{a.writing.items.map((i) => <li>{i}</li>)}</ul>
+  </section>
+  <section>
+    <h2>{a.contact.heading}</h2>
+    <ul>
+      {a.contact.items.map((l) => (
+        <li><a href={l.href} {...(l.href.startsWith('mailto:') ? {} : ext)}>{l.name}</a></li>
+      ))}
+    </ul>
+  </section>
+  <section>
+    <h2>{a.more.heading}</h2>
+    <p>{a.more.text}</p>
+    <p><a href={a.more.link.href} {...ext}>{a.more.link.name}</a></p>
+  </section>
 </Card>

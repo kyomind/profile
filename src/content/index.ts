@@ -8,6 +8,16 @@ export interface Nav { label: string; links: { key: NavKey; label: string; href:
 export interface Link { name: string; href: string }
 export interface LinkGroup { heading: string; items: Link[] }
 
+export interface Job { title: string; org?: string; period?: string; summary: string }
+export interface About {
+  heading: string;
+  experience: { heading: string; jobs: Job[] };
+  stack: { heading: string; groups: { name: string; items: string[] }[] };
+  writing: { heading: string; items: string[] };
+  contact: { heading: string; items: Link[] };
+  more: { heading: string; text: string; link: Link };
+}
+
 export interface Content {
   lang: string;
   name: string;
@@ -21,6 +31,7 @@ export interface Content {
   showcase: Showcase[];
   outputs: LinkGroup;
   accounts: LinkGroup;
+  about: About;
 }
 
 export const content: Partial<Record<Locale, Content>> = {
@@ -74,6 +85,58 @@ export const content: Partial<Record<Locale, Content>> = {
       { name: 'Threads', href: 'https://www.threads.com/@kyomind.tw' },
       { name: 'X', href: 'https://x.com/kyomind' },
     ] },
+    about: {
+      heading: '關於',
+      experience: {
+        heading: '經歷',
+        jobs: [
+          {
+            title: 'Senior Software Engineer', org: '殷富資訊', period: '2025.03 — 2026.03',
+            summary: '打造金融 AI 對話服務與知識庫系統，涵蓋 RAG、Agent Flow、多 LLM 整合，以及 PII 遮蔽與 Guardrails。',
+          },
+          {
+            title: 'Python 後端工程師', org: '森淨科技', period: '2021.07 — 2024.08',
+            summary: '開發 IoT 裝置管理平台，以 Redis 將查詢效能提升 3 倍。主導流程自動化與品質控管，Code Review 退回減少 30%，測試時間縮短 50%。',
+          },
+          {
+            title: '數據工程師', org: '信義房屋', period: '2019.06 — 2021.04',
+            summary: '建構每日數百萬筆用戶行為資料的清洗、聚合與儲存流程，並以 Django 開發內部資料查詢服務。',
+          },
+          {
+            title: '法律系畢業，任公職 5 年多',
+            summary: '離開公職後轉職成為軟體工程師，從資料工程起步。',
+          },
+        ],
+      },
+      stack: {
+        heading: '技術棧',
+        groups: [
+          { name: 'Infrastructure & DevOps', items: ['AWS', 'Kubernetes / K3s', 'Terraform', 'Prometheus / Grafana', 'Jenkins / GitHub Actions'] },
+          { name: 'Backend', items: ['Python', 'Django / FastAPI', 'PostgreSQL', 'Redis', 'MongoDB'] },
+          { name: 'Testing & Quality', items: ['pytest', 'Ruff / Pyright', 'SonarQube', 'CodeQL / Bandit'] },
+        ],
+      },
+      writing: {
+        heading: '寫作成績',
+        items: [
+          '210+ 篇技術與思考文章',
+          '部落格累積瀏覽 80 萬以上',
+          '2024 iThome 鐵人賽 Python 組優選，系列為《Django 忍法帖》',
+        ],
+      },
+      contact: {
+        heading: 'CV 與聯絡方式',
+        items: [
+          { name: 'CV（CakeResume）', href: 'https://www.cake.me/resumes/kyomind' },
+          { name: 'odinxp@gmail.com', href: 'mailto:odinxp@gmail.com' },
+        ],
+      },
+      more: {
+        heading: '更多關於我',
+        text: '完整的故事寫在部落格的 About 頁。',
+        link: { name: '部落格的 About 頁', href: 'https://blog.kyomind.tw/about/' },
+      },
+    },
   },
   // en：票 #5 才加入
 };
